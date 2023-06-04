@@ -160,6 +160,21 @@ final class NodesTests: XCTestCase {
         XCTAssertEqual(Array(descendants), [desktops!, macPro!, macMini!, iMac!, notebooks!, macBookPro!, devices!, handhelds!, ipod!, iphone!, newton!, setTopBoxes!, appleTV!, ipodHiFi!])
     }
 
+    func testNextSibling() {
+        XCTAssertNil(root.nextSibling)
+        XCTAssertNil(iMac.nextSibling)
+        XCTAssertIdentical(desktops.nextSibling, notebooks)
+        XCTAssertIdentical(iphone.nextSibling, newton)
+    }
+
+    func testPreviousSibling() {
+        XCTAssertNil(root.previousSibling)
+        XCTAssertNil(desktops.previousSibling)
+        XCTAssertNil(ipod.previousSibling)
+        XCTAssertIdentical(devices.previousSibling, notebooks)
+        XCTAssertIdentical(iphone.previousSibling, ipod)
+    }
+
     static var allTests = [
         ("testTree", testTree),
         ("testNodeBuilder", testNodeBuilder),

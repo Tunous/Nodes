@@ -79,18 +79,6 @@ extension Node {
         return children.filter { $0.isBranch }
     }
     
-    // MARK: - Siblings
-    
-    /// Returns all other nodes with the same parent.
-    public var siblings: [Self] {
-        return siblingsIncludingSelf.filter { $0 !== self }
-    }
-    
-    /// Returns all nodes (including the current node) with the same parent.
-    public var siblingsIncludingSelf: [Self] {
-        return parent?.children ?? []
-    }
-    
     // MARK: - Position
     
     /// Returns the distance between a node and the root.
