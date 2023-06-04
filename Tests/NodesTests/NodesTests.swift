@@ -150,6 +150,16 @@ final class NodesTests: XCTestCase {
         XCTAssertEqual(root.children[2].children[2].children, [])
     }
 
+    func testBreadthFirstDescendants() {
+        let descendants = Array(root.descendants(traversal: .breadthFirst))
+        XCTAssertEqual(descendants, [desktops!, notebooks!, devices!, macPro!, macMini!, iMac!, macBookPro!, handhelds!, setTopBoxes!, ipodHiFi!, ipod!, iphone!, newton!, appleTV!])
+    }
+
+    func testDepthFirstDescendants() {
+        let descendants = root.descendants(traversal: .depthFirst)
+        XCTAssertEqual(Array(descendants), [desktops!, macPro!, macMini!, iMac!, notebooks!, macBookPro!, devices!, handhelds!, ipod!, iphone!, newton!, setTopBoxes!, appleTV!, ipodHiFi!])
+    }
+
     static var allTests = [
         ("testTree", testTree),
         ("testNodeBuilder", testNodeBuilder),

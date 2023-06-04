@@ -50,18 +50,6 @@ extension Node {
         return children.count
     }
     
-    /// Returns all descendants, traversing the entire tree.
-    public var descendants: [Self] {
-        var nodes = [Self]()
-        if isBranch {
-            nodes.append(contentsOf: children)
-            for child in children {
-                nodes.append(contentsOf: child.descendants)
-            }
-        }
-        return nodes
-    }
-    
     // MARK: - Leaves
     
     /// A Boolean value indicating whether the node is without children.
