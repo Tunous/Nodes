@@ -2,51 +2,69 @@ import XCTest
 @testable import Nodes
 
 final class NodesTests: XCTestCase {
-    func testTree() {
-        let root = SimpleNode(value: "Apple")
-        
-        let desktops = SimpleNode(value: "Desktops")
+    var root: SimpleNode!
+    var desktops: SimpleNode!
+    var macPro: SimpleNode!
+    var macMini: SimpleNode!
+    var iMac: SimpleNode!
+    var notebooks: SimpleNode!
+    var macBookPro: SimpleNode!
+    var devices: SimpleNode!
+    var handhelds: SimpleNode!
+    var ipod: SimpleNode!
+    var iphone: SimpleNode!
+    var newton: SimpleNode!
+    var setTopBoxes: SimpleNode!
+    var appleTV: SimpleNode!
+    var ipodHiFi: SimpleNode!
+
+    override func setUp() {
+        root = SimpleNode(value: "Apple")
+
+        desktops = SimpleNode(value: "Desktops")
         root.addChild(node: desktops)
-        
-        let macPro = SimpleNode(value: "Mac Pro")
+
+        macPro = SimpleNode(value: "Mac Pro")
         desktops.addChild(node: macPro)
-        
-        let macMini = SimpleNode(value: "Mac Mini")
+
+        macMini = SimpleNode(value: "Mac Mini")
         desktops.addChild(node: macMini)
-        
-        let iMac = SimpleNode(value: "iMac")
+
+        iMac = SimpleNode(value: "iMac")
         desktops.addChild(node: iMac)
-        
-        let notebooks = SimpleNode(value: "Notebooks")
+
+        notebooks = SimpleNode(value: "Notebooks")
         root.addChild(node: notebooks)
-        
-        let macBookPro = SimpleNode(value: "MacBook Pro")
+
+        macBookPro = SimpleNode(value: "MacBook Pro")
         notebooks.addChild(node: macBookPro)
-        
-        let devices = SimpleNode(value: "Devices")
+
+        devices = SimpleNode(value: "Devices")
         root.addChild(node: devices)
-        
-        let handhelds = SimpleNode(value: "Handhelds")
+
+        handhelds = SimpleNode(value: "Handhelds")
         devices.addChild(node: handhelds)
-        
-        let ipod = SimpleNode(value: "iPod")
+
+        ipod = SimpleNode(value: "iPod")
         handhelds.addChild(node: ipod)
-        
-        let iphone = SimpleNode(value: "iPhone")
+
+        iphone = SimpleNode(value: "iPhone")
         handhelds.addChild(node: iphone)
-        
-        let newton = SimpleNode(value: "Newton")
+
+        newton = SimpleNode(value: "Newton")
         handhelds.addChild(node: newton)
-        
-        let setTopBoxes = SimpleNode(value: "Set-top boxes")
+
+        setTopBoxes = SimpleNode(value: "Set-top boxes")
         devices.addChild(node: setTopBoxes)
-        
-        let appleTV = SimpleNode(value: "Apple TV")
+
+        appleTV = SimpleNode(value: "Apple TV")
         setTopBoxes.addChild(node: appleTV)
-        
-        let ipodHiFi = SimpleNode(value: "iPod HiFi")
+
+        ipodHiFi = SimpleNode(value: "iPod HiFi")
         devices.addChild(node: ipodHiFi)
-        
+    }
+
+    func testTree() {
         XCTAssertEqual(ipod.siblings, [iphone, newton])
         XCTAssertEqual(ipod.siblingsIncludingSelf, [ipod, iphone, newton])
         XCTAssertEqual(root.siblingsIncludingSelf, [])
@@ -67,7 +85,7 @@ final class NodesTests: XCTestCase {
         XCTAssertEqual(newton.root, root)
         XCTAssertEqual(root.root, root)
         XCTAssertEqual(root.degree, 3)
-        XCTAssertEqual(root.descendants.sorted { $0.value < $1.value }, [desktops, macPro, macMini, iMac, notebooks, macBookPro, devices, handhelds, ipod, iphone, newton, setTopBoxes, appleTV, ipodHiFi].sorted { $0.value < $1.value })
+        XCTAssertEqual(root.descendants.sorted { $0.value < $1.value }, [desktops!, macPro!, macMini!, iMac!, notebooks!, macBookPro!, devices!, handhelds!, ipod!, iphone!, newton!, setTopBoxes!, appleTV!, ipodHiFi!].sorted { $0.value < $1.value })
         XCTAssertEqual(ipodHiFi.description, "iPod HiFi")
         
         let treeRepresentation = """
@@ -92,7 +110,48 @@ final class NodesTests: XCTestCase {
         XCTAssertEqual(root.lineBasedDescription, treeRepresentation)
     }
 
+    func testNodeBuilder() {
+        let root = SimpleNode("Apple") {
+            SimpleNode("Desktops") {
+                SimpleNode("Mac Pro")
+                SimpleNode("Mac Mini")
+                SimpleNode("iMac")
+            }
+            SimpleNode("Notebooks") {
+                SimpleNode("MacBook Pro")
+            }
+            SimpleNode("Devices") {
+                SimpleNode("Handhelds") {
+                    SimpleNode("iPod")
+                    SimpleNode("iPhone")
+                    SimpleNode("Newton")
+                }
+                SimpleNode("Set-top boxes") {
+                    SimpleNode("Apple TV")
+                }
+                SimpleNode("iPod HiFi")
+            }
+        }
+        XCTAssertEqual(root, self.root)
+        XCTAssertEqual(root.children, [desktops, notebooks, devices])
+        XCTAssertEqual(root.children[0].children, [macPro, macMini, iMac])
+        XCTAssertEqual(root.children[0].children[0].children, [])
+        XCTAssertEqual(root.children[0].children[1].children, [])
+        XCTAssertEqual(root.children[0].children[2].children, [])
+        XCTAssertEqual(root.children[1].children, [macBookPro])
+        XCTAssertEqual(root.children[1].children[0].children, [])
+        XCTAssertEqual(root.children[2].children, [handhelds, setTopBoxes, ipodHiFi])
+        XCTAssertEqual(root.children[2].children[0].children, [ipod, iphone, newton])
+        XCTAssertEqual(root.children[2].children[0].children[0].children, [])
+        XCTAssertEqual(root.children[2].children[0].children[1].children, [])
+        XCTAssertEqual(root.children[2].children[0].children[2].children, [])
+        XCTAssertEqual(root.children[2].children[1].children, [appleTV])
+        XCTAssertEqual(root.children[2].children[1].children[0].children, [])
+        XCTAssertEqual(root.children[2].children[2].children, [])
+    }
+
     static var allTests = [
         ("testTree", testTree),
+        ("testNodeBuilder", testNodeBuilder),
     ]
 }
