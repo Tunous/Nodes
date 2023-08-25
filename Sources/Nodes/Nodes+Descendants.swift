@@ -22,20 +22,32 @@ extension Node {
         return nodes
     }
 
+    /// Returns all descendants including self, traversing the entire tree.
+    public var descendantsIncludingSelf: [Self] {
+        return [self] + descendants
+    }
+
     /// Returns all descendants using order from given `traversal`.
     ///
     /// - Parameter traversal: How to traverse to next descendant.
     public func descendants(traversal: NodeTraversal) -> some Sequence<Self> {
-        return NodeDescendants(node: self, traversal: traversal)
+        return NodeDescendants(stack: children, traversal: traversal)
+    }
+
+    /// Returns all descendants including self using order from given `traversal`.
+    ///
+    /// - Parameter traversal: How to traverse to next descendant.
+    public func descendantsIncludingSelf(traversal: NodeTraversal) -> some Sequence<Self> {
+        return NodeDescendants(stack: [self], traversal: traversal)
     }
 }
 
 private struct NodeDescendants<Node: Nodes.Node>: Sequence {
-    let node: Node
+    let stack: [Node]
     let traversal: NodeTraversal
 
     func makeIterator() -> Iterator {
-        Iterator(stack: node.children, traversal: traversal)
+        return Iterator(stack: stack, traversal: traversal)
     }
 
     struct Iterator: IteratorProtocol {
