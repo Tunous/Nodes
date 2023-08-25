@@ -37,4 +37,9 @@ extension Node {
         }
         return parent.children[selfIndex - 1]
     }
+
+    /// Returns a Boolean value indicating whether the parent has a child node directly after this node.
+    public var hasNextSibling: Bool {
+        nextSibling != nil
+    }
 }
