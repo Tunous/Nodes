@@ -16,8 +16,7 @@ extension Node {
     public var nextSibling: Self? {
         guard let parent else { return nil }
         guard let selfIndex = parent.children.firstIndex(where: { $0 === self }) else {
-            assertionFailure("Parent doesn't contain this node as its child")
-            return nil
+            preconditionFailure("Parent doesn't contain this node as its child")
         }
         if parent.children.count == selfIndex + 1 {
             return nil
@@ -29,8 +28,7 @@ extension Node {
     public var previousSibling: Self? {
         guard let parent else { return nil }
         guard let selfIndex = parent.children.firstIndex(where: { $0 === self }) else {
-            assertionFailure("Parent doesn't contain this node as its child")
-            return nil
+            preconditionFailure("Parent doesn't contain this node as its child")
         }
         if selfIndex == 0 {
             return nil
