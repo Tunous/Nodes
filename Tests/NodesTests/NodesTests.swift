@@ -39,7 +39,6 @@ final class NodesTests: BaseTestCase {
             ├── Set-top boxes
             │   └── Apple TV
             └── iPod HiFi
-
         """
         
         XCTAssertEqual(devices.root.lineBasedDescription, treeRepresentation)

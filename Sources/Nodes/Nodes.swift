@@ -105,11 +105,11 @@ extension Node {
     private var lastLinePrefixes: PrefixStrings { return ("└── ", "    ") }
     
     private func buildLines(_ previousPrefixes: PrefixStrings = ("", "")) -> String {
-        return children.reduce("\(previousPrefixes.prefix)\(value)\n") {
+        return children.reduce("\(previousPrefixes.prefix)\(value)") {
             let currentPrefixStrings = children.last === $1 ? lastLinePrefixes : linePrefixes
             let prefixes = (previousPrefixes.childrenPrefix + currentPrefixStrings.prefix,
                             previousPrefixes.childrenPrefix + currentPrefixStrings.childrenPrefix)
-            return $0 + $1.buildLines(prefixes)
+            return $0 + "\n" + $1.buildLines(prefixes)
         }
     }
 }
