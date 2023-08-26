@@ -8,11 +8,11 @@
 @testable import Nodes
 
 final class SimpleNode: Node {
-    typealias Value = String
-    var value: Value
+    let value: String
     weak var parent: SimpleNode?
     var children: [SimpleNode]
-    init(value: Value) {
+
+    init(value: String) {
         self.value = value
         self.children = []
     }
